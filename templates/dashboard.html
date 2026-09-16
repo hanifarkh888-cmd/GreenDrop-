@@ -1,0 +1,154 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Green Drop Dashboard</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background-color: #E8F5E9;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #1B5E20;
+            margin-bottom: 40px;
+        }
+
+        .dashboard {
+            width: 900px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: white;
+            width: 220px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #2E7D32;
+            font-size: 20px;
+        }
+
+        .value {
+            color: #1B5E20;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .description {
+            color: #607D64;
+            font-size: 14px;
+        }
+
+        .back {
+            margin-top: 40px;
+        }
+
+        .back a {
+            text-decoration: none;
+            background-color: #2E7D32;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            background-color: #1B5E20;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <h1>📊 Green Drop Dashboard</h1>
+
+
+    <div class="dashboard">
+
+
+        <div class="card">
+
+            <h2>💧 Water Usage</h2>
+
+            <div class="value">
+
+                {{ water|default(0) }} L
+
+            </div>
+
+            <p class="description">
+                Weekly water consumption
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>⚡ Electricity Usage</h2>
+
+            <div class="value">
+
+                {{ electricity|default(0) }} kWh
+
+            </div>
+
+            <p class="description">
+                Monthly electricity consumption
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>🌍 Carbon Footprint</h2>
+
+            <div class="value">
+
+                {{ carbon|default(0) }} kg
+
+            </div>
+
+            <p class="description">
+                Yearly CO₂ emissions
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="back">
+
+        <a href="/">
+            🏠 Back to Home
+        </a>
+
+    </div>
+
+
+</body>
+
+</html>
+```

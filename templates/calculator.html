@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Water Calculator</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background-color: #E3F2FD;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .container {
+            width: 450px;
+            margin: auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #0277BD;
+            margin-bottom: 35px;
+        }
+
+        .input-box {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #263238;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #90CAF9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0288D1;
+        }
+
+        button {
+            background-color: #0288D1;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0277BD;
+        }
+
+        #result {
+            color: #01579B;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>💧 Water Calculator</h1>
+
+
+        <div class="input-box">
+
+            <label>Showers per week:</label>
+
+            <input type="number" id="showers">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Toilet uses per day:</label>
+
+            <input type="number" id="toilet">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Laundry loads per week:</label>
+
+            <input type="number" id="laundry">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Dish washing times per day:</label>
+
+            <input type="number" id="dishes">
+
+        </div>
+
+
+        <button onclick="calculateWater()">
+            Calculate
+        </button>
+
+
+        <p id="result"></p>
+
+    </div>
+
+
+    <script>
+
+        function calculateWater() {
+
+            let showers = document.getElementById("showers").value;
+
+            let toilet = document.getElementById("toilet").value;
+
+            let laundry = document.getElementById("laundry").value;
+
+            let dishes = document.getElementById("dishes").value;
+
+
+            let total =
+                (showers * 50) +
+                (toilet * 6 * 7) +
+                (laundry * 100) +
+                (dishes * 20 * 7);
+
+
+                    document.getElementById("result").innerHTML =
+                        "Your weekly water consumption is: " + total + " liters";
+
+
+                    localStorage.setItem("waterUsage", total);
+                    
+                    fetch("/save_water", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "water=" + total
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+        });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

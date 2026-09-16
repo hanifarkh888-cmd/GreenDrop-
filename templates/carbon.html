@@ -1,0 +1,283 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Carbon Calculator</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background-color: #E8F5E9;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .container {
+            width: 450px;
+            margin: auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #2E7D32;
+            margin-bottom: 35px;
+        }
+
+        .input-box {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #263238;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #A5D6A7;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #43A047;
+        }
+
+        button {
+            background-color: #43A047;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2E7D32;
+        }
+
+        #result {
+            color: #1B5E20;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>🌍 Carbon Calculator</h1>
+
+
+        <div class="input-box">
+
+            <label>Car Type:</label>
+
+            <select id="carType">
+
+                <option value="none">No Car</option>
+
+                <option value="gasoline">Gasoline</option>
+
+                <option value="diesel">Diesel</option>
+
+                <option value="electric">Electric</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Car Distance per Week (km):</label>
+
+            <input type="number" id="carDistance" min="0">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Electricity Usage per Month (kWh):</label>
+
+            <input type="number" id="electricity" min="0">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Electricity Source:</label>
+
+            <select id="electricitySource">
+
+                <option value="grid">Electricity Grid</option>
+
+                <option value="solar">100% Solar</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Flights per Year:</label>
+
+            <input type="number" id="flights" min="0">
+
+        </div>
+
+
+        <button onclick="calculateCarbon()">
+            Calculate
+        </button>
+
+
+        <p id="result"></p>
+
+    </div>
+
+
+    <script>
+
+        function calculateCarbon() {
+
+            let carType =
+                document.getElementById("carType").value;
+
+            let carDistance =
+                Number(document.getElementById("carDistance").value);
+
+            let electricity =
+                Number(document.getElementById("electricity").value);
+
+            let electricitySource =
+                document.getElementById("electricitySource").value;
+
+            let flights =
+                Number(document.getElementById("flights").value);
+
+
+            let carCarbon = 0;
+
+
+            if (carType === "gasoline") {
+
+                carCarbon =
+                    carDistance * 0.21 * 52;
+
+            }
+
+            else if (carType === "diesel") {
+
+                carCarbon =
+                    carDistance * 0.17 * 52;
+
+            }
+
+            else if (carType === "electric") {
+
+                carCarbon =
+                    carDistance * 0.05 * 52;
+
+            }
+
+
+            let electricityCarbon = 0;
+
+
+            if (electricitySource === "grid") {
+
+                electricityCarbon =
+                    electricity * 0.45 * 12;
+
+            }
+
+
+            let flightCarbon =
+                flights * 250;
+
+
+            let total =
+                carCarbon +
+                electricityCarbon +
+                flightCarbon;
+
+
+            document.getElementById("result").innerHTML =
+                "Estimated Carbon Footprint: "
+                + total.toFixed(2)
+                + " kg CO₂ / year";
+
+
+            // Save temporarily in browser
+
+            localStorage.setItem(
+                "carbonFootprint",
+                total
+            );
+
+
+            // Send carbon value to Flask
+
+            fetch("/save_carbon", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+
+                body:
+                    "carbon=" + total
+
+            })
+
+            .then(response => response.text())
+
+            .then(data => {
+
+                console.log("Server:", data);
+
+            })
+
+            .catch(error => {
+
+                console.log("Error:", error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

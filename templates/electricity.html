@@ -1,0 +1,198 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Electricity Calculator</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background-color: #FFF8E1;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .container {
+            width: 450px;
+            margin: auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #F9A825;
+            margin-bottom: 35px;
+        }
+
+        .input-box {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #263238;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #FFE082;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #F9A825;
+        }
+
+        button {
+            background-color: #F9A825;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #F57F17;
+        }
+
+        #result {
+            color: #E65100;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>⚡ Electricity Calculator</h1>
+
+
+        <div class="input-box">
+
+            <label>Device power (Watts):</label>
+
+            <input type="number" id="power">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Hours used per day:</label>
+
+            <input type="number" id="hours">
+
+        </div>
+
+
+        <div class="input-box">
+
+            <label>Days used per month:</label>
+
+            <input type="number" id="days">
+
+        </div>
+
+
+        <button onclick="calculateElectricity()">
+            Calculate
+        </button>
+
+
+        <p id="result"></p>
+
+    </div>
+
+
+    <script>
+
+        function calculateElectricity() {
+
+            let power =
+                document.getElementById("power").value;
+
+            let hours =
+                document.getElementById("hours").value;
+
+            let days =
+                document.getElementById("days").value;
+
+
+            let total =
+                (power * hours * days) / 1000;
+
+
+            document.getElementById("result").innerHTML =
+                "Your monthly electricity consumption is: "
+                + total.toFixed(2) + " kWh";
+
+
+            // Save temporarily in browser
+
+            localStorage.setItem(
+                "electricityUsage",
+                total
+            );
+
+
+            // Send electricity value to Flask
+
+            fetch("/save_electricity", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+
+                body:
+                    "electricity=" + total
+
+            })
+
+            .then(response => response.text())
+
+            .then(data => {
+
+                console.log("Server:", data);
+
+            })
+
+            .catch(error => {
+
+                console.log("Error:", error);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```
